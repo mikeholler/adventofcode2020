@@ -9,7 +9,7 @@ import java.io.File
 
 val target = 2020
 
-fun List<Int>.product(): Sequence<Pair<Int, Int>> = sequence {
+fun List<Int>.twoProduct(): Sequence<Pair<Int, Int>> = sequence {
     forEach { a ->
         forEach { b ->
             yield(a to b)
@@ -17,16 +17,31 @@ fun List<Int>.product(): Sequence<Pair<Int, Int>> = sequence {
     }
 }
 
+fun List<Int>.threeProduct(): Sequence<List<Int>> = sequence {
+    forEach { c ->
+        yieldAll(twoProduct().map { it.toList().plus(c) })
+    }
+}
 
-val output = File(args[0])
+val input = File(args[0])
     .readLines()
     .mapNotNull { it.toIntOrNull() }
     .distinct()
-    .product()
-    .find { it.first + it.second == target}
+
+val firstAnswer = input
+    .twoProduct()
+    .find { it.toList().sum() == target}
     ?.let { "The answer is: ${it.first * it.second}" }
     ?: "Unable to find an answer that sums to $target"
 
-println(output)
+println(firstAnswer)
+
+val secondAnswer = input
+    .threeProduct()
+    .find { it.sum() == target}
+    ?.let { "The answer is: ${it.reduce { acc, i -> acc * i }}" }
+    ?: "Unable to find an answer that sums to $target"
+
+println(secondAnswer)
 
 
