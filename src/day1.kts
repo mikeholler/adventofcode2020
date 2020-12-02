@@ -9,12 +9,10 @@ import java.io.File
 
 val target = 2020
 
-fun List<Int>.product(): Sequence<Pair<Int, Int>> {
-    return sequence {
-        forEach { a ->
-            forEach { b ->
-                yield(a to b)
-            }
+fun List<Int>.product(): Sequence<Pair<Int, Int>> = sequence {
+    forEach { a ->
+        forEach { b ->
+            yield(a to b)
         }
     }
 }
