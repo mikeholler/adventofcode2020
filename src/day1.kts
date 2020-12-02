@@ -20,12 +20,15 @@ fun List<Int>.product(): Sequence<Pair<Int, Int>> {
 }
 
 
-File(args[0])
+val output = File(args[0])
     .readLines()
     .mapNotNull { it.toIntOrNull() }
+    .distinct()
     .product()
-    .find { it.first * it.second == target}
-    ?.also { println("The answer is: ${it.first * it.second}") }
-    ?: println("Unable to find an answer that sums to $target")
+    .find { it.first + it.second == target}
+    ?.let { "The answer is: ${it.first * it.second}" }
+    ?: "Unable to find an answer that sums to $target"
+
+println(output)
 
 
